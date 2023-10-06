@@ -24,10 +24,10 @@ Ext.define('Tualo.menueditor.lazy.RoutesDropdown',{
         this.store.loadData(list);
     },
     alias: ['widget.routesdropdown'],
-    //typeAhead: true,
+    typeAhead: true,
     //lazyRender:true,
     queryMode: 'local',
-    //triggerAction: 'all',
+    triggerAction: 'all',
     minChars: 2,
     displayField: 'name',
     valueField: 'path'

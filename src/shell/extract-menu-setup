@@ -1,0 +1,77 @@
+#!/bin/sh
+
+mkdir -p $2/src/sql/install/
+echo "DELIMITER ;"  > $2/src/sql/install/$1.menu.sql
+X=`cat << EndOfX
+WITH RECURSIVE m AS (
+select 
+    id,
+    title,
+    path,
+    component,
+    path2,
+    priority,
+    iconcls,
+    route_to
+from 
+    macc_menu
+where   
+    title = '$1'
+UNION ALL
+select 
+    macc_menu.id,
+    macc_menu.title,
+    macc_menu.path,
+    macc_menu.component,
+    macc_menu.path2,
+    macc_menu.priority,
+    macc_menu.iconcls,
+    macc_menu.route_to
+from
+    macc_menu
+inner join m on m.id = macc_menu.path2  
+)
+select 
+    id,
+    title,
+    path,
+    component,
+    path2,
+    priority,
+    iconcls,
+    route_to
+from 
+    m
+EndOfX`
+
+SQL=`cat << EndOfSQL
+select 
+concat(
+    'insert into SESSIONDB.macc_menu (id, title, path, component, path2, priority, iconcls, route_to) values (',
+    quote(id), ',',
+    quote(title), ',',
+    quote(path), ',',
+    quote(component), ',',
+    quote(path2), ',',
+    quote(priority), ',',
+    quote(iconcls), ',',
+    quote(route_to), ')',
+    char(59), 
+    char(10)   
+
+) sql_text
+from 
+(
+$X
+) x
+EndOfSQL`
+
+
+A="select * from rolle_menu where id in  (select id from ($X) x) "
+SQL2="select concat(    'insert ignore into SESSIONDB.rolle_menu (id, rolle) values (',    quote(id), ',',    quote(rolle), ')',    char(59),     char(10)    ) sql_text from ( $A ) s"
+
+DDL=$(mysql ${@:3} --skip-column-names -e "$SQL")
+echo $DDL  >> $2/src/sql/install/$1.menu.sql
+
+D=$(mysql ${@:3} --skip-column-names -e "$SQL2")
+echo $D >> $2/src/sql/install/$1.menu.sql
