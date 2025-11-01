@@ -8,6 +8,10 @@ use Tualo\Office\Basic\IRoute;
 
 class Route extends \Tualo\Office\Basic\RouteWrapper
 {
+    public static function scope(): string
+    {
+        return 'menueditor.main';
+    }
     public static function register()
     {
         BasicRoute::add('/menueditor/read', function ($matches) {
@@ -69,7 +73,7 @@ class Route extends \Tualo\Office\Basic\RouteWrapper
             } catch (\Exception $e) {
                 App::result('msg', $e->getMessage());
             }
-        }, ['get', 'post'], true);
+        }, ['get', 'post'], true, [], self::scope());
 
         BasicRoute::add('/menueditor/update', function ($matches) {
             App::contenttype('application/json');
@@ -130,7 +134,7 @@ class Route extends \Tualo\Office\Basic\RouteWrapper
             } catch (\Exception $e) {
                 App::result('msg', $e->getMessage());
             }
-        }, ['get', 'post'], true);
+        }, ['get', 'post'], true, [], self::scope());
 
         BasicRoute::add('/menueditor/create', function ($matches) {
             App::contenttype('application/json');
@@ -158,7 +162,7 @@ class Route extends \Tualo\Office\Basic\RouteWrapper
             } catch (\Exception $e) {
                 App::result('msg', $e->getMessage());
             }
-        }, ['get', 'post'], true);
+        }, ['get', 'post'], true, [], self::scope());
 
 
         BasicRoute::add('/menueditor/delete', function ($matches) {
@@ -178,6 +182,6 @@ class Route extends \Tualo\Office\Basic\RouteWrapper
             } catch (\Exception $e) {
                 App::result('msg', $e->getMessage());
             }
-        }, ['get', 'post'], true);
+        }, ['get', 'post'], true, [], self::scope());
     }
 }
