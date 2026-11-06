@@ -1,6 +1,6 @@
-Ext.define('Tualo.menueditor.lazy.Viewport',{
+Ext.define('Tualo.menueditor.lazy.Viewport', {
     extend: 'Ext.panel.Panel',
-    requires:[
+    requires: [
         'Tualo.menueditor.lazy.RoutesDropdown',
         'Tualo.menueditor.lazy.controller.Viewport',
         'Tualo.menueditor.lazy.model.Viewport',
@@ -12,6 +12,13 @@ Ext.define('Tualo.menueditor.lazy.Viewport',{
         type: 'menueditorviewport'
     },
     */
+    getWindowTitle: function () {
+        return 'Menü'
+    },
+    getWindowIcon: function () {
+        return 'fa-solid fa-bars';
+    },
+
     tools: [{
         xtype: 'glyphtool',
         //glyphPrefix: 'entypo et-',
@@ -52,8 +59,8 @@ Ext.define('Tualo.menueditor.lazy.Viewport',{
                 Ext.Msg.alert('Fehler', 'Einträge mit Untermenüs können nicht gelöscht werden!');
                 return;
             }
-            
-            Ext.MessageBox.confirm('Löschen','Soll der Eintrag "'+selection.get('text')+'" wirklich gelöscht werden?', function (btn) {
+
+            Ext.MessageBox.confirm('Löschen', 'Soll der Eintrag "' + selection.get('text') + '" wirklich gelöscht werden?', function (btn) {
                 if (btn == 'yes') {
 
                     Tualo.Fetch.post('menueditor/delete', {
@@ -146,7 +153,7 @@ Ext.define('Tualo.menueditor.lazy.Viewport',{
                         parentNode.eachChild(fn, true);
                     }
                 }
-        
+
             },
             columns: [{
                 xtype: 'treecolumn', // this is so we know which column will show the tree
@@ -155,12 +162,12 @@ Ext.define('Tualo.menueditor.lazy.Viewport',{
                 glyph: false,
                 flex: 2,
                 //sortable: true
-            },{
+            }, {
                 dataIndex: 'iconcls',
                 renderer: function (value) {
                     //if (!value) return '';
                     //return value.join(', ')
-                    return '<span class="'+value+'"></span>';
+                    return '<span class="' + value + '"></span>';
                 },
                 width: 40
             }, {
@@ -179,7 +186,7 @@ Ext.define('Tualo.menueditor.lazy.Viewport',{
                 //sortable: true,
             }]
             //html: 'test'
-        },{
+        }, {
             xtype: 'form',
             bodyPadding: 10,
             defaults: {
@@ -198,7 +205,7 @@ Ext.define('Tualo.menueditor.lazy.Viewport',{
                         var form = me.up('form');
                         form.up('panel').getLayout().setActiveItem(0);
                     },
-                },'->',
+                }, '->',
                 {
                     text: 'Speichern',
                     handler: function (me) {
@@ -212,12 +219,12 @@ Ext.define('Tualo.menueditor.lazy.Viewport',{
 
 
                         if (Ext.isEmpty(vals.groups)) vals.groups = [];
-                        selection.set('text',vals.text);
-                        selection.set('title',vals.text);
+                        selection.set('text', vals.text);
+                        selection.set('title', vals.text);
                         // selection.set('iconCls',vals.iconCls);
-                        selection.set('iconcls',vals.iconcls);
-                        selection.set('route_to',vals.route_to);
-                        selection.set('groups',vals.groups);
+                        selection.set('iconcls', vals.iconcls);
+                        selection.set('route_to', vals.route_to);
+                        selection.set('groups', vals.groups);
                         selection.commit();
 
                         form.up('panel').getLayout().setActiveItem(0);
@@ -248,8 +255,8 @@ Ext.define('Tualo.menueditor.lazy.Viewport',{
                     allowBlank: true,
                     queryMode: 'local',
                     grow: true,
-                    store:{
-                        type:'ds_view_session_groups',
+                    store: {
+                        type: 'ds_view_session_groups',
                         autoLoad: true
                     }
                     /*
@@ -290,4 +297,4 @@ Ext.define('Tualo.menueditor.lazy.Viewport',{
             ]
         }
     ]
-} );
+});
